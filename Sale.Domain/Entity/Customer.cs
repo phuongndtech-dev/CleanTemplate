@@ -7,6 +7,6 @@
         public DateTime DOB { get; set; }
         public string Email { get; set; }
 
-        public virtual Product Product { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

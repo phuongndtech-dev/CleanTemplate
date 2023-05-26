@@ -12,7 +12,7 @@ using Sale.Infrastructure.Persistence;
 namespace Sale.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230525194440_InitDatabase")]
+    [Migration("20230526150326_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
@@ -42,12 +42,7 @@ namespace Sale.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Customers");
                 });
@@ -58,13 +53,13 @@ namespace Sale.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("ProductId")
@@ -78,6 +73,12 @@ namespace Sale.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ShopId");
+
                     b.ToTable("Orders");
                 });
 
@@ -87,9 +88,6 @@ namespace Sale.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -97,9 +95,6 @@ namespace Sale.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ShopId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -119,43 +114,51 @@ namespace Sale.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("Shops");
                 });
 
-            modelBuilder.Entity("Sale.Domain.Entity.Customer", b =>
+            modelBuilder.Entity("Sale.Domain.Entity.Order", b =>
                 {
-                    b.HasOne("Sale.Domain.Entity.Product", "Product")
-                        .WithMany("Customers")
+                    b.HasOne("Sale.Domain.Entity.Customer", "Customers")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sale.Domain.Entity.Product", "Products")
+                        .WithMany("Orders")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.HasOne("Sale.Domain.Entity.Shop", "Shops")
+                        .WithMany("Orders")
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customers");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("Shops");
                 });
 
-            modelBuilder.Entity("Sale.Domain.Entity.Shop", b =>
+            modelBuilder.Entity("Sale.Domain.Entity.Customer", b =>
                 {
-                    b.HasOne("Sale.Domain.Entity.Product", "Product")
-                        .WithMany("Shops")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Sale.Domain.Entity.Product", b =>
                 {
-                    b.Navigation("Customers");
+                    b.Navigation("Orders");
+                });
 
-                    b.Navigation("Shops");
+            modelBuilder.Entity("Sale.Domain.Entity.Shop", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
