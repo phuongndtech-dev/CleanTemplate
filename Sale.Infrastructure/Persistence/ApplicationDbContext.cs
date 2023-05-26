@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sale.Application.Common.Interfaces;
 using Sale.Domain.Entity;
 
 namespace Sale.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public ApplicationDbContext()
         {

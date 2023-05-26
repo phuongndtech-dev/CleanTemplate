@@ -9,5 +9,8 @@ namespace Sale.Application.Common.Interfaces
         public DbSet<Product> Products { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<Order> Orders { get; set; }
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        int SaveChanges();
     }
 }

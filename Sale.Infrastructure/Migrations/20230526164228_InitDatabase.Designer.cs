@@ -12,7 +12,7 @@ using Sale.Infrastructure.Persistence;
 namespace Sale.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230526150326_InitDatabase")]
+    [Migration("20230526164228_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />
