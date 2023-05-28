@@ -16,11 +16,4 @@
     <ProjectReference Include="..\Sale.Domain\Sale.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTO\Products\" />
-    <Folder Include="DTO\Shops\" />
-    <Folder Include="Services\Shops\" />
-    <Folder Include="Services\Products\" />
-  </ItemGroup>
-
 </Project>

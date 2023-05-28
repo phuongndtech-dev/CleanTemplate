@@ -3,6 +3,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using Sale.Application.DTO.Customers;
 using Sale.Application.Services.Customers;
+using Sale.Application.Services.Products;
+using Sale.Application.Services.Shops;
 
 namespace Sale.Application
 {
@@ -18,6 +20,8 @@ namespace Sale.Application
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IShopService, ShopService>();
+            services.AddScoped<IProductService, ProductService>();
 
             return services;
         }
