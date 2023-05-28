@@ -6,8 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configurationBuilder = new ConfigurationBuilder();
 
+var environment = builder.Environment.EnvironmentName;
+
 IConfiguration configuration = configurationBuilder
-    .AddJsonFile("appsettings.Development.json")
+    .AddJsonFile($"appsettings.{environment}.json")
     .Build();
 
 // Add services to the container.
