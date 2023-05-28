@@ -14,20 +14,20 @@ namespace Sale.Application.Services.Customers
             _dbContext = dbContext;
         }
 
-        public async Task<Guid> CreateAsync(AddOrUpdateCustomerDTO customer, CancellationToken cancellationToken)
+        public async Task<Guid> CreateAsync(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken)
         {
             var entity = new Customer
             {
                 Id = Guid.NewGuid(),
-                Name = customer.Name,
-                DOB = customer.DOB,
-                Email = customer.Email
+                Name = dto.Name,
+                DOB = dto.DOB,
+                Email = dto.Email
             };
 
             await _dbContext.Customers.AddAsync(entity, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return customer.Id;
+            return entity.Id;
         }
 
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
@@ -35,6 +35,8 @@ namespace Sale.Application.Services.Customers
             var entity = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
 
             _dbContext.Customers.Remove(entity);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Customer>> GetAllAsync(CancellationToken cancellationToken)
@@ -42,18 +44,18 @@ namespace Sale.Application.Services.Customers
 
         public async Task<IQueryable<Customer>> SearchAsync(string param, CancellationToken cancellationToken)
         {
-            return _dbContext.Customers.Where(c => c.Name.Contains(param) || c.Email.Contains(param));
+            return _dbContext.Customers.AsNoTracking().Where(c => c.Name.Contains(param) || c.Email.Contains(param));
         }
 
-        public async Task<Guid> UpdateAsync(Customer customer, CancellationToken cancellationToken)
+        public async Task<Guid> UpdateAsync(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken)
         {
-            var entity = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id.Equals(customer.Id), cancellationToken);
+            var entity = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id.Equals(dto.Id), cancellationToken);
 
             if (entity == null) return Guid.Empty;
 
-            entity.Name = customer.Name;
-            entity.DOB = customer.DOB;
-            entity.Email = customer.Email;
+            entity.Name = dto.Name;
+            entity.DOB = dto.DOB;
+            entity.Email = dto.Email;
 
             _dbContext.Customers.Update(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);

@@ -6,8 +6,8 @@ namespace Sale.Application.Services.Customers
     public interface ICustomerService
     {
         Task<IEnumerable<Customer>> GetAllAsync(CancellationToken cancellationToken);
-        Task<Guid> CreateAsync(AddOrUpdateCustomerDTO customer, CancellationToken cancellationToken);
-        Task<Guid> UpdateAsync(Customer customer, CancellationToken cancellationToken);
+        Task<Guid> CreateAsync(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken);
+        Task<Guid> UpdateAsync(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken);
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
         Task<IQueryable<Customer>> SearchAsync(string @param, CancellationToken cancellationToken);
     }

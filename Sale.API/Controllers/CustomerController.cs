@@ -17,15 +17,15 @@ namespace Sale.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AddOrUpdateCustomerDTO customer, CancellationToken cancellationToken)
+        public async Task<IActionResult> Create(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken)
         {
-            return Ok(await _customerService.CreateAsync(customer, cancellationToken));
+            return Ok(await _customerService.CreateAsync(dto, cancellationToken));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(Customer customer, CancellationToken cancellationToken)
+        public async Task<IActionResult> Update(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken)
         {
-            return Ok(await _customerService.UpdateAsync(customer, cancellationToken));
+            return Ok(await _customerService.UpdateAsync(dto, cancellationToken));
         }
 
         [HttpDelete]
