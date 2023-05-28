@@ -1,3 +1,4 @@
+using Hellang.Middleware.ProblemDetails;
 using Sale.API.Extensions;
 using Sale.Application;
 using Sale.Infrastructure;
@@ -29,6 +30,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseProblemDetails();
 
 app.UseHttpsRedirection();
 

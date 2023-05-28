@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sale.Application.Common;
 using Sale.Application.Common.Interfaces;
 using Sale.Application.DTO.Customers;
+using Sale.Application.Exception.Customers;
 using Sale.Domain.Entity;
 
 namespace Sale.Application.Services.Customers
@@ -32,7 +34,8 @@ namespace Sale.Application.Services.Customers
 
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
-            var entity = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
+            var entity = await _dbContext.Customers.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken)
+                ?? throw new CustomerCustomException(ApplicationConst.CustomerNotFound);
 
             _dbContext.Customers.Remove(entity);
 
@@ -42,9 +45,14 @@ namespace Sale.Application.Services.Customers
         public async Task<IEnumerable<Customer>> GetAllAsync(CancellationToken cancellationToken)
             => await _dbContext.Customers.AsNoTracking().ToListAsync(cancellationToken);
 
-        public async Task<IQueryable<Customer>> SearchAsync(string param, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Customer>> SearchAsync(string param, CancellationToken cancellationToken)
         {
-            return _dbContext.Customers.AsNoTracking().Where(c => c.Name.Contains(param) || c.Email.Contains(param));
+            var data = await _dbContext.Customers
+                        .AsNoTracking()
+                        .Where(c => c.Name.Contains(param) || c.Email.Contains(param))
+                        .ToListAsync(cancellationToken);
+
+            return data.OrderBy(x => x.Email).ToList();
         }
 
         public async Task<Guid> UpdateAsync(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken)

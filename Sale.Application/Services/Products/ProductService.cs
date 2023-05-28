@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sale.Application.Common;
 using Sale.Application.Common.Interfaces;
 using Sale.Application.DTO.Products;
+using Sale.Application.Exception.Products;
 using Sale.Domain.Entity;
 
 namespace Sale.Application.Services.Products
@@ -31,7 +33,8 @@ namespace Sale.Application.Services.Products
 
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
-            var entity = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
+            var entity = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken)
+                    ?? throw new ProductCustomException(ApplicationConst.ProductNotFound);
 
             _dbContext.Products.Remove(entity);
 
@@ -41,8 +44,14 @@ namespace Sale.Application.Services.Products
         public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken)
             => await _dbContext.Products.AsNoTracking().ToListAsync(cancellationToken);
 
-        public async Task<IQueryable<Product>> SearchAsync(string param, CancellationToken cancellationToken)
-            => _dbContext.Products.AsNoTracking().Where(c => c.Name.Contains(param));
+        public async Task<IEnumerable<Product>> SearchAsync(string param, CancellationToken cancellationToken)
+        {
+            var data = await _dbContext.Products
+                     .AsNoTracking()
+                     .Where(c => c.Name.Contains(param))
+                     .ToListAsync(cancellationToken);
+            return data.OrderByDescending(c => c.Price).ToList();
+        }
 
         public async Task<Guid> UpdateAsync(AddOrUpdateProductDTO dto, CancellationToken cancellationToken)
         {

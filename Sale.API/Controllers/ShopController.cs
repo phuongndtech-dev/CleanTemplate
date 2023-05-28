@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sale.Application.DTO.Products;
 using Sale.Application.DTO.Shops;
 using Sale.Application.Services.Shops;
 
@@ -34,6 +33,12 @@ namespace Sale.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> SearchOrQuery([FromQuery] string @param, CancellationToken cancellationToken)
-            => Ok(await _shopService.SearchAsync(param, cancellationToken));
+        {
+            var data = await _shopService.SearchAsync(param, cancellationToken);
+
+            if(!data.Any()) return NotFound();
+
+            return Ok(data);
+        }
     }
 }

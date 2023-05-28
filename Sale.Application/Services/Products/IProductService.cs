@@ -1,5 +1,4 @@
-﻿using Sale.Application.DTO.Customers;
-using Sale.Application.DTO.Products;
+﻿using Sale.Application.DTO.Products;
 using Sale.Domain.Entity;
 
 namespace Sale.Application.Services.Products
@@ -10,6 +9,6 @@ namespace Sale.Application.Services.Products
         Task<Guid> CreateAsync(AddOrUpdateProductDTO dto, CancellationToken cancellationToken);
         Task<Guid> UpdateAsync(AddOrUpdateProductDTO dto, CancellationToken cancellationToken);
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
-        Task<IQueryable<Product>> SearchAsync(string @param, CancellationToken cancellationToken);
+        Task<IEnumerable<Product>> SearchAsync(string @param, CancellationToken cancellationToken);
     }
 }

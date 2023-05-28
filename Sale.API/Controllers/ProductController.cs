@@ -33,6 +33,12 @@ namespace Sale.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> SearchOrQuery([FromQuery] string @param, CancellationToken cancellationToken)
-            => Ok(await _productService.SearchAsync(param, cancellationToken));
+        {
+            var data = await _productService.SearchAsync(param, cancellationToken);
+
+            if (!data.Any()) return NotFound();
+
+            return Ok(data);
+        }
     }
 }

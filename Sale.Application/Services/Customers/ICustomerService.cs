@@ -9,6 +9,6 @@ namespace Sale.Application.Services.Customers
         Task<Guid> CreateAsync(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken);
         Task<Guid> UpdateAsync(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken);
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
-        Task<IQueryable<Customer>> SearchAsync(string @param, CancellationToken cancellationToken);
+        Task<IEnumerable<Customer>> SearchAsync(string @param, CancellationToken cancellationToken);
     }
 }

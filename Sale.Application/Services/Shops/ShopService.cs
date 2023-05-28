@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sale.Application.Common;
 using Sale.Application.Common.Interfaces;
 using Sale.Application.DTO.Shops;
+using Sale.Application.Exception.Shops;
 using Sale.Domain.Entity;
 
 namespace Sale.Application.Services.Shops
@@ -31,7 +33,8 @@ namespace Sale.Application.Services.Shops
 
         public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
-            var entity = await _dbContext.Shops.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
+            var entity = await _dbContext.Shops.FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken)
+              ?? throw new ShopCustomException(ApplicationConst.ShopNotFound);
 
             _dbContext.Shops.Remove(entity);
 
