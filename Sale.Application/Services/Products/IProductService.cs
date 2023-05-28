@@ -10,6 +10,6 @@ namespace Sale.Application.Services.Products
         Task<Guid> CreateAsync(AddOrUpdateProductDTO dto, CancellationToken cancellationToken);
         Task<Guid> UpdateAsync(AddOrUpdateProductDTO dto, CancellationToken cancellationToken);
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
-        Task<IQueryable<Customer>> SearchAsync(string @param, CancellationToken cancellationToken);
+        Task<IQueryable<Product>> SearchAsync(string @param, CancellationToken cancellationToken);
     }
 }
