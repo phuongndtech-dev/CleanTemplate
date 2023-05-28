@@ -1,12 +1,14 @@
 using Sale.API.Extensions;
-using Sale.Infrastructure;
 using Sale.Application;
-using Sale.Application.Services.Customers;
+using Sale.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var configurationBuilder = new ConfigurationBuilder();
-IConfiguration configuration = configurationBuilder.Build();
+
+IConfiguration configuration = configurationBuilder
+    .AddJsonFile("appsettings.Development.json")
+    .Build();
 
 // Add services to the container.
 builder.Services.AddApplication();
