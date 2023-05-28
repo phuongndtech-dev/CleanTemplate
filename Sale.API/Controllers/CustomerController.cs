@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sale.Application.DTO.Customers;
 using Sale.Application.Services.Customers;
-using Sale.Domain.Entity;
 
 namespace Sale.API.Controllers
 {
@@ -18,15 +17,11 @@ namespace Sale.API.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken)
-        {
-            return Ok(await _customerService.CreateAsync(dto, cancellationToken));
-        }
+            => Ok(await _customerService.CreateAsync(dto, cancellationToken));
 
         [HttpPut]
         public async Task<IActionResult> Update(AddOrUpdateCustomerDTO dto, CancellationToken cancellationToken)
-        {
-            return Ok(await _customerService.UpdateAsync(dto, cancellationToken));
-        }
+            => Ok(await _customerService.UpdateAsync(dto, cancellationToken));
 
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
@@ -38,8 +33,6 @@ namespace Sale.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> SearchOrQuery([FromQuery] string @param, CancellationToken cancellationToken)
-        {
-            return Ok(await _customerService.SearchAsync(param, cancellationToken));
-        }
+            => Ok(await _customerService.SearchAsync(param, cancellationToken));
     }
 }
