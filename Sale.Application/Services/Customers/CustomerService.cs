@@ -43,7 +43,11 @@ namespace Sale.Application.Services.Customers
         }
 
         public async Task<IEnumerable<Customer>> GetAllAsync(CancellationToken cancellationToken)
-            => await _dbContext.Customers.AsNoTracking().ToListAsync(cancellationToken);
+        {
+            var data = await _dbContext.Customers.AsNoTracking().ToListAsync(cancellationToken);
+
+            return data.OrderBy(x => x.Email).ToList();
+        }
 
         public async Task<IEnumerable<Customer>> SearchAsync(string param, CancellationToken cancellationToken)
         {

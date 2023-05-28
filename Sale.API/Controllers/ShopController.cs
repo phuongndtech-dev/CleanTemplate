@@ -32,11 +32,21 @@ namespace Sale.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchOrQuery([FromQuery] string @param, CancellationToken cancellationToken)
+        public async Task<IActionResult> Search([FromQuery] string? @param, CancellationToken cancellationToken)
         {
             var data = await _shopService.SearchAsync(param, cancellationToken);
 
             if(!data.Any()) return NotFound();
+
+            return Ok(data);
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+        {
+            var data = await _shopService.GetAllAsync(cancellationToken);
+
+            if (!data.Any()) return NotFound();
 
             return Ok(data);
         }

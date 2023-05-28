@@ -42,7 +42,11 @@ namespace Sale.Application.Services.Products
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken)
-            => await _dbContext.Products.AsNoTracking().ToListAsync(cancellationToken);
+        {
+            var data = await _dbContext.Products.AsNoTracking().ToListAsync(cancellationToken);
+
+            return data.OrderByDescending(c => c.Price).ToList();
+        }
 
         public async Task<IEnumerable<Product>> SearchAsync(string param, CancellationToken cancellationToken)
         {

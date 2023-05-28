@@ -42,7 +42,11 @@ namespace Sale.Application.Services.Shops
         }
 
         public async Task<IEnumerable<Shop>> GetAllAsync(CancellationToken cancellationToken)
-            => await _dbContext.Shops.AsNoTracking().ToListAsync(cancellationToken);
+        {
+            var data = await _dbContext.Shops.AsNoTracking().ToListAsync(cancellationToken);
+
+            return data.OrderByDescending(x => x.Location).ToList();
+        }
 
         public async Task<IEnumerable<Shop>> SearchAsync(string param, CancellationToken cancellationToken)
         {
@@ -51,7 +55,7 @@ namespace Sale.Application.Services.Shops
                             .Where(c => c.Name.Contains(param) || c.Location.Contains(param))
                             .ToListAsync(cancellationToken);
 
-            return data.OrderBy(x => x.Location).ToList();
+            return data.OrderByDescending(x => x.Location).ToList();
         }
 
         public async Task<Guid> UpdateAsync(AddOrUpdateShopDTO dto, CancellationToken cancellationToken)
