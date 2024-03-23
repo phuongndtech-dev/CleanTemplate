@@ -4,11 +4,6 @@ namespace RestaurantManagement.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class OrdersController : ControllerBase
+public class RestaurantsController : ControllerBase
 {
-    [HttpGet("")]
-    public OkResult Get()
-    {
-        return Ok();
-    }
 }
